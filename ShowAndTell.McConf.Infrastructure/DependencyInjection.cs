@@ -26,6 +26,8 @@ namespace ShowAndTell.McConf.Infrastructure
             services.AddScoped<IUnitOfWork>(provider => provider.GetService<ApplicationDbContext>());
             services.AddTransient<IPromptRepository, PromptRepository>();
             services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddScoped<IOpenAiClient, OpenAIClient>();
+
             return services;
         }
     }
