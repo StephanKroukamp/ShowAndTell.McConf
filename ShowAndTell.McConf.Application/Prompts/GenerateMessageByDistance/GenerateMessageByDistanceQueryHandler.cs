@@ -24,26 +24,26 @@ namespace ShowAndTell.McConf.Application.Prompts.GenerateMessageByDistance
         public async Task<string> Handle(GenerateMessageByDistanceQuery request, CancellationToken cancellationToken)
         {
             var message = "";
-
-            if (request.Distance <= 1)
+            
+            if (request.Distance <= 50 && request.Distance > 30) // green
             {
-                message = "please generate me a message saying you are to close to our device, we did warn you!";
+                message = "please generate me a message saying you are being detected by our device!";
             }
-            else if (request.Distance > 1 & request.Distance <= 2)
+            else if (request.Distance <= 30 && request.Distance > 15) // yellow
             {
                 message = "please generate me a message saying you are getting closer to our device, do not come closer!";
             }
-            else
+            else if (request.Distance <= 15) // red
             {
-                message = "please generate me a message saying you are being detected by our device!";
+                message = "please generate me a message saying you are to close to our device, we did warn you!";
             }
 
             if (message is null)
             {
-                throw new Exception("Unexpected distance received, please adjust paramters");
+                throw new Exception("Unexpected distance received, please adjust parameters");
             }
 
-            message += " please randomize this message response to be unique everytime";
+            message += ", please take this text and generate a unique message with different wording.";
 
             return await _openAiClient.GenerateText(message, request.ApiKey);
         }

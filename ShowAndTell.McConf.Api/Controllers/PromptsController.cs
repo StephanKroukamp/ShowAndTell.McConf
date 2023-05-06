@@ -120,9 +120,10 @@ namespace ShowAndTell.McConf.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> GenerateMessage(decimal promptText, CancellationToken cancellationToken)
+        [IntentManaged(Mode.Ignore)]
+        public async Task<ActionResult<string>> GenerateMessage(decimal promptText, string apiKey, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GenerateMessageByDistanceQuery { Distance = promptText }, cancellationToken);
+            var result = await _mediator.Send(new GenerateMessageByDistanceQuery { Distance = promptText, ApiKey = apiKey}, cancellationToken);
 
             var script = new Script{
                 Text = result
