@@ -27,21 +27,23 @@ namespace ShowAndTell.McConf.Application.Prompts.GenerateMessageByDistance
 
             if (request.Distance <= 1)
             {
-                message = "please generate me a message saying you are to close";
+                message = "please generate me a message saying you are to close to our device, we did warn you!";
             }
             else if (request.Distance > 1 & request.Distance <= 2)
             {
-                message = "please generate me a message saying you are getting closer";
+                message = "please generate me a message saying you are getting closer to our device, do not come closer!";
             }
             else
             {
-                message = "please generate me a message saying you are being detected";
+                message = "please generate me a message saying you are being detected by our device!";
             }
 
             if (message is null)
             {
                 throw new Exception("Unexpected distance received, please adjust paramters");
             }
+
+            message += " please randomize this message response to be unique everytime";
 
             return await _openAiClient.GenerateText(message);
         }
