@@ -1,3 +1,4 @@
+using Amazon.Polly;
 using Intent.RoslynWeaver.Attributes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,8 @@ namespace ShowAndTell.McConf.Infrastructure
             services.AddScoped<IDomainEventService, DomainEventService>();
             services.AddScoped<IOpenAiClient, OpenAIClient>();
             services.AddScoped<IDALLEApiClient, DALLEApiClient>();
+            services.AddAWSService<IAmazonPolly>();
+            services.AddTransient<IAmazonPollyService, AmazonPollyService>();
 
             return services;
         }

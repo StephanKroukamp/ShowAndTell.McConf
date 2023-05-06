@@ -129,6 +129,8 @@ namespace ShowAndTell.McConf.Api.Controllers
                 Width = 500
             };
 
+            var response = await _mediator.Send(new GenerateAudioCommand { Script = result, VoiceId = "Arthur" });
+
             var request = new GenerateVideoRequest { Script = script };
             var video = await _mediator.Send(request);
 

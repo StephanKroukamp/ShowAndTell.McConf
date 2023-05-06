@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.Core" Version="3.7.106.32" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
+    <PackageReference Include="AWSSDK.Polly" Version="3.7.106.53" />
     <PackageReference Include="Intent.RoslynWeaver.Attributes" Version="2.0.1" />
   </ItemGroup>
 
