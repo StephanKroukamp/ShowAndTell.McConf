@@ -30,17 +30,9 @@ namespace ShowAndTell.McConf.Infrastructure
             services.AddTransient<IPromptRepository, PromptRepository>();
             services.AddScoped<IDomainEventService, DomainEventService>();
             services.AddScoped<IOpenAiClient, OpenAIClient>();
+            services.AddScoped<IDALLEApiClient, DALLEApiClient>();
 
             return services;
-        }
-
-        public static void AddDependencyInjection(this IServiceCollection services)
-        {
-            var apiKey = "";
-            var dalleApiClient = new DALLEApiClient(apiKey);
-            services.AddSingleton(dalleApiClient);
-
-            services.AddMediatR(typeof(GenerateVideoHandler).Assembly);
         }
     }
 }

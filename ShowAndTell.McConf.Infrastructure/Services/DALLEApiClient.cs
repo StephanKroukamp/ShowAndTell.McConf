@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using ShowAndTell.McConf.Application.Common.Interfaces;
 using ShowAndTell.McConf.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -9,18 +10,17 @@ using System.Threading.Tasks;
 
 namespace ShowAndTell.McConf.Infrastructure.Services
 {
-    public class DALLEApiClient
+    public class DALLEApiClient : IDALLEApiClient
     {
-        private readonly RestClient _client;
-
-        public DALLEApiClient(string apiKey)
-        {
-            _client = new RestClient("https://api.openai.com/v1/");
-            _client.AddDefaultHeader("Authorization", $"Bearer {apiKey}");
-        }
+        private RestClient _client;
 
         public async Task<Video> GenerateVideo(Script script)
         {
+            var apiKey = "";
+
+            _client = new RestClient("https://api.openai.com/v1/");
+            _client.AddDefaultHeader("Authorization", $"Bearer {apiKey}");
+
             var request = new RestRequest("dalle-mini/video/generate", Method.Post);
             request.AddJsonBody(new
             {
