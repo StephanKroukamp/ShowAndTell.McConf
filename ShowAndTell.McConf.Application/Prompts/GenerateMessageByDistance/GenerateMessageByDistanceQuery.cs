@@ -13,5 +13,7 @@ namespace ShowAndTell.McConf.Application.Prompts.GenerateMessageByDistance
     {
         public decimal Distance { get; set; }
 
+        public string ApiKey { get; set; }
+
     }
 }

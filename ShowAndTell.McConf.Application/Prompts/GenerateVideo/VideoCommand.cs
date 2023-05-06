@@ -13,6 +13,8 @@ namespace ShowAndTell.McConf.Application.Prompts.GenerateVideo
     public class GenerateVideoRequest : IRequest<Video>
     {
         public Script Script { get; set; }
+
+        public string ApiKey { get; set; }
     }
 
     public class GenerateVideoHandler : IRequestHandler<GenerateVideoRequest, Video>
@@ -26,7 +28,7 @@ namespace ShowAndTell.McConf.Application.Prompts.GenerateVideo
 
         public async Task<Video> Handle(GenerateVideoRequest request, CancellationToken cancellationToken)
         {
-            return await _dalleApiClient.GenerateVideo(request.Script);
+            return await _dalleApiClient.GenerateVideo(request.Script, request.ApiKey);
         }
     }
 }
