@@ -16,6 +16,7 @@ namespace ShowAndTell.McConf.Infrastructure
 {
     public static class DependencyInjection
     {
+        [IntentManaged(Mode.Fully, Body = Mode.Ignore)]
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
