@@ -1,11 +1,8 @@
-using Amazon.Polly;
 using Intent.RoslynWeaver.Attributes;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShowAndTell.McConf.Application.Common.Interfaces;
-using ShowAndTell.McConf.Application.Prompts.GenerateVideo;
 using ShowAndTell.McConf.Domain.Common.Interfaces;
 using ShowAndTell.McConf.Domain.Repositories;
 using ShowAndTell.McConf.Infrastructure.Persistence;
@@ -32,8 +29,6 @@ namespace ShowAndTell.McConf.Infrastructure
             services.AddScoped<IDomainEventService, DomainEventService>();
             services.AddScoped<IOpenAiClient, OpenAIClient>();
             services.AddScoped<IDALLEApiClient, DALLEApiClient>();
-            services.AddAWSService<IAmazonPolly>();
-            services.AddTransient<IAmazonPollyService, AmazonPollyService>();
 
             return services;
         }

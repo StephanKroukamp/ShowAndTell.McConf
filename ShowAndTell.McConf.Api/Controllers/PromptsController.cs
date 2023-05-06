@@ -136,8 +136,13 @@ namespace ShowAndTell.McConf.Api.Controllers
 
             var request = new GenerateVideoRequest { Script = script };
             var video = await _mediator.Send(request);
-
-            return result != null ? Ok(result) : NotFound();
+            
+            return result != null ? Ok(new
+            {
+                Text = result,
+                ImageUrl = video.Url
+                
+            }) : NotFound();
         }
     }
 }
