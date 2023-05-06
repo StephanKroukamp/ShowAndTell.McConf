@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Amazon.Runtime.Internal.Util;
 using Intent.RoslynWeaver.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ShowAndTell.McConf.Api.Controllers.ResponseTypes;
 using ShowAndTell.McConf.Api.Models;
 using ShowAndTell.McConf.Application.Prompts;
@@ -32,10 +35,12 @@ namespace ShowAndTell.McConf.Api.Controllers
     public class PromptsController : ControllerBase
     {
         private readonly ISender _mediator;
+        private readonly ILogger<PromptsController> _logger;
 
-        public PromptsController(ISender mediator)
+        public PromptsController(ISender mediator, ILogger<PromptsController> logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _logger = logger;
         }
 
         /// <summary>
@@ -142,6 +147,8 @@ namespace ShowAndTell.McConf.Api.Controllers
                 ImageUrl = video.Url,
                 InputText = generatedMessage
             };
+
+            _logger.LogInformation(JsonConvert.SerializeObject(result));
 
             return result != null ? Ok(result) : NotFound();
         }
