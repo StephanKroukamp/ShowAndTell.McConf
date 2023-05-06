@@ -125,15 +125,12 @@ namespace ShowAndTell.McConf.Api.Controllers
             var result = await _mediator.Send(new GenerateMessageByDistanceQuery { Distance = promptText }, cancellationToken);
 
             var script = new Script{
-                Text = result,
-                FPS = 15,
-                Height = 500,
-                Width = 500
+                Text = result
             };
 
-            var response = await _mediator.Send(new GenerateAudioCommand { Script = result, VoiceId = "Arthur" });
+            //var response = await _mediator.Send(new GenerateAudioCommand { Script = result, VoiceId = "Arthur" });
 
-            var request = new GenerateVideoRequest { Script = script };
+            var request = new GenerateVideoRequest { Script = script, ApiKey = "sk-xYyGd9MaBVC8oPNnPLx9T3BlbkFJQN9K7MrZVTnQu0tCB1o" };
             var video = await _mediator.Send(request);
 
             return result != null ? Ok(result) : NotFound();
