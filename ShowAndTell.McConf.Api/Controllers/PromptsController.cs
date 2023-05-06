@@ -1,21 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Intent.RoslynWeaver.Attributes;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using ShowAndTell.McConf.Api.Controllers.ResponseTypes;
 using ShowAndTell.McConf.Application.Prompts;
 using ShowAndTell.McConf.Application.Prompts.CreatePrompt;
 using ShowAndTell.McConf.Application.Prompts.DeletePrompt;
-using ShowAndTell.McConf.Application.Prompts.GenerateMessage;
+using ShowAndTell.McConf.Application.Prompts.GenerateMessageByDistance;
 using ShowAndTell.McConf.Application.Prompts.GetPromptById;
 using ShowAndTell.McConf.Application.Prompts.GetPrompts;
 using ShowAndTell.McConf.Application.Prompts.UpdatePrompt;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 [assembly: DefaultIntentManaged(Mode.Fully)]
 [assembly: IntentTemplate("Intent.AspNetCore.Controllers.Controller", Version = "1.0")]
@@ -118,9 +116,9 @@ namespace ShowAndTell.McConf.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> GenerateMessage(string promptText, CancellationToken cancellationToken)
+        public async Task<ActionResult<string>> GenerateMessage(decimal promptText, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GenerateMessageQuery { PrompText = promptText }, cancellationToken);
+            var result = await _mediator.Send(new GenerateMessageByDistanceQuery { Distance = promptText }, cancellationToken);
             return result != null ? Ok(result) : NotFound();
         }
     }

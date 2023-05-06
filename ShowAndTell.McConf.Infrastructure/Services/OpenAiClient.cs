@@ -11,7 +11,7 @@ namespace ShowAndTell.McConf.Infrastructure.Services
     {
         public async Task<string> GenerateText(string prompt)
         {
-            string apiKey = "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";
+            string apiKey = "";
 
             var client = new RestClient("https://api.openai.com/v1/completions");
 
