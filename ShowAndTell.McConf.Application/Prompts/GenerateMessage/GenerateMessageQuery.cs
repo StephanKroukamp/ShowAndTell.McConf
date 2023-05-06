@@ -9,7 +9,7 @@ using ShowAndTell.McConf.Application.Common.Interfaces;
 
 namespace ShowAndTell.McConf.Application.Prompts.GenerateMessage
 {
-    public class GenerateMessageQuery : IRequest<bool>, IQuery
+    public class GenerateMessageQuery : IRequest<string>, IQuery
     {
         public string PrompText { get; set; }
 

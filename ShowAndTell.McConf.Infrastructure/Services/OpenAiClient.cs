@@ -2,6 +2,7 @@
 using RestSharp;
 using ShowAndTell.McConf.Application.Common.Interfaces;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShowAndTell.McConf.Infrastructure.Services
@@ -10,34 +11,43 @@ namespace ShowAndTell.McConf.Infrastructure.Services
     {
         public async Task<string> GenerateText(string prompt)
         {
-            try
+            string apiKey = "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";
+
+            var client = new RestClient("https://api.openai.com/v1/completions");
+
+            var request = new RestRequest();
+            request.Method = Method.Post;
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "Bearer " + apiKey);
+
+            string requestBody = "{\"model\":\"text-davinci-003\",\"prompt\":\"" + prompt + "\",\"max_tokens\":1000,\"temperature\":0}";
+
+            request.AddParameter("application/json", requestBody, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            var result = JsonConvert.DeserializeObject<GptResponse>(response.Content);
+
+            var stringy = JsonConvert.SerializeObject(result);
+
+            if (result is null)
             {
-                //
-                string apiKey = "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";
-
-                var client = new RestClient("https://api.openai.com/v1/completions");
-                
-                var request = new RestRequest();
-                request.Method = Method.Post;
-                request.AddHeader("Content-Type", "application/json");
-                request.AddHeader("Authorization", "Bearer " + apiKey);
-                
-                string requestBody = "{\"model\":\"text-davinci-003\",\"prompt\":\"" + prompt + "\",\"max_tokens\":7,\"temperature\":0}";
-
-                request.AddParameter("application/json", requestBody, ParameterType.RequestBody);
-
-                var response = client.Execute(request);
-
-                var result = JsonConvert.DeserializeObject<dynamic>(response.Content);
-
-                var stop = "";
-            }
-            catch (Exception e)
-            {
-                throw;
+                throw new Exception("Failed to deserialize GPT response");
             }
 
-            return "";
+            var firstChoice = result.Choices.First();
+
+            if (firstChoice is null)
+            {
+                throw new Exception("No Choices returned from GPT");
+            }
+
+            if (string.IsNullOrWhiteSpace(firstChoice.Text))
+            {
+                throw new Exception("First choice does not have any text");
+            }
+
+            return firstChoice.Text;
         }
     }
 }
