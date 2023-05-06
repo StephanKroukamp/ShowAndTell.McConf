@@ -19,17 +19,18 @@ namespace ShowAndTell.McConf.Infrastructure.Services
             _client = new RestClient("https://api.openai.com/v1/");
             _client.AddDefaultHeader("Authorization", $"Bearer {apiKey}");
 
-            var request = new RestRequest("dalle-mini/video/generate", Method.Post);
+            var request = new RestRequest("images/generations", Method.Post);
             request.AddJsonBody(new
             {
                 prompt = script.Text,
                 size = $"{script.Width}x{script.Height}",
-                fps = script.FPS
+                n = 1,
+                response_format = "url"
             });
 
             var response = await _client.ExecuteAsync(request);
-            var content = JsonConvert.DeserializeObject<Video>(response.Content);
-            return content;
+            var content = JsonConvert.DeserializeObject<VideoResponse>(response.Content);
+            return content.Data.FirstOrDefault();
         }
     }
 }

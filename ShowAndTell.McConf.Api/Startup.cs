@@ -32,6 +32,15 @@ namespace ShowAndTell.McConf.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                  name: "OpenCORSPolicy",
+                  builder => {
+                      builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                  });
+            });
+
             services.AddControllers();
             services.ConfigureJWTSecurity(Configuration);
             services.AddApplication();
@@ -50,6 +59,7 @@ namespace ShowAndTell.McConf.Api
             app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors("OpenCORSPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

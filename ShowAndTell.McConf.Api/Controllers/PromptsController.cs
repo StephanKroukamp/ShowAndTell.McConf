@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Intent.RoslynWeaver.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using ShowAndTell.McConf.Api.Controllers.ResponseTypes;
+using ShowAndTell.McConf.Api.Models;
 using ShowAndTell.McConf.Application.Prompts;
 using ShowAndTell.McConf.Application.Prompts.CreatePrompt;
 using ShowAndTell.McConf.Application.Prompts.DeletePrompt;
@@ -25,6 +27,7 @@ using ShowAndTell.McConf.Domain.Models;
 namespace ShowAndTell.McConf.Api.Controllers
 {
     [ApiController]
+    [EnableCors("OpenCORSPolicy")]
     [Route("api/[controller]")]
     public class PromptsController : ControllerBase
     {
@@ -121,28 +124,26 @@ namespace ShowAndTell.McConf.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [IntentManaged(Mode.Ignore)]
-        public async Task<ActionResult<string>> GenerateMessage(decimal promptText, string apiKey, CancellationToken cancellationToken)
+        public async Task<ActionResult<GenerateResponse>> GenerateMessage(decimal promptText, string apiKey, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GenerateMessageByDistanceQuery { Distance = promptText, ApiKey = apiKey}, cancellationToken);
+            var generatedMessage = await _mediator.Send(new GenerateMessageByDistanceQuery { Distance = promptText, ApiKey = apiKey}, cancellationToken);
 
             var script = new Script{
-                Text = result,
-                FPS = 15,
-                Height = 500,
-                Width = 500
+                Text = generatedMessage,
+                Width = 512,
+                Height = 512,
             };
 
-            var response = await _mediator.Send(new GenerateAudioCommand { Script = result, VoiceId = "Arthur" });
-
-            var request = new GenerateVideoRequest { Script = script };
+            var request = new GenerateVideoRequest { Script = script, ApiKey = apiKey };
             var video = await _mediator.Send(request);
-            
-            return result != null ? Ok(new
+
+            var result = new GenerateResponse
             {
-                Text = result,
-                ImageUrl = video.Url
-                
-            }) : NotFound();
+                ImageUrl = video.Url,
+                InputText = generatedMessage
+            };
+
+            return result != null ? Ok(result) : NotFound();
         }
     }
 }
