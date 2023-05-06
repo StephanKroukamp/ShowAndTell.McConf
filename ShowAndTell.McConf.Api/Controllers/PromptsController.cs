@@ -110,15 +110,15 @@ namespace ShowAndTell.McConf.Api.Controllers
 
         /// <summary>
         /// </summary>
-        /// <response code="200">Returns the specified bool.</response>
+        /// <response code="200">Returns the specified string.</response>
         /// <response code="400">One or more validation errors have occurred.</response>
-        /// <response code="404">Can't find an bool with the parameters provided.</response>
+        /// <response code="404">Can't find an string with the parameters provided.</response>
         [HttpGet("[action]")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<bool>> GenerateMessage(string promptText, CancellationToken cancellationToken)
+        public async Task<ActionResult<string>> GenerateMessage(string promptText, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new GenerateMessageQuery { PrompText = promptText }, cancellationToken);
             return result != null ? Ok(result) : NotFound();
