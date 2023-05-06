@@ -7,11 +7,11 @@ using ShowAndTell.McConf.Application.Common.Interfaces;
 [assembly: DefaultIntentManaged(Mode.Fully)]
 [assembly: IntentTemplate("Intent.Application.MediatR.QueryModels", Version = "1.0")]
 
-namespace ShowAndTell.McConf.Application.Prompts.GenerateMessage
+namespace ShowAndTell.McConf.Application.Prompts.GenerateMessageByDistance
 {
-    public class GenerateMessageQuery : IRequest<string>, IQuery
+    public class GenerateMessageByDistanceQuery : IRequest<string>, IQuery
     {
-        public string PrompText { get; set; }
+        public decimal Distance { get; set; }
 
     }
 }
