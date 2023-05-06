@@ -9,6 +9,6 @@ namespace ShowAndTell.McConf.Application.Common.Interfaces
 {
     public interface IDALLEApiClient
     {
-        Task<Video> GenerateVideo(Script script);
+        Task<Video> GenerateVideo(Script script, string apiKey);
     }
 }

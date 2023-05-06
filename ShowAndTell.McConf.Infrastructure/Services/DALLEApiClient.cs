@@ -14,10 +14,8 @@ namespace ShowAndTell.McConf.Infrastructure.Services
     {
         private RestClient _client;
 
-        public async Task<Video> GenerateVideo(Script script)
+        public async Task<Video> GenerateVideo(Script script, string apiKey)
         {
-            var apiKey = "";
-
             _client = new RestClient("https://api.openai.com/v1/");
             _client.AddDefaultHeader("Authorization", $"Bearer {apiKey}");
 

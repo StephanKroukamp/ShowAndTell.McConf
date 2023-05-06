@@ -9,10 +9,8 @@ namespace ShowAndTell.McConf.Infrastructure.Services
 {
     public class OpenAIClient : IOpenAiClient
     {
-        public async Task<string> GenerateText(string prompt)
+        public async Task<string> GenerateText(string prompt, string apiKey)
         {
-            string apiKey = "";
-
             var client = new RestClient("https://api.openai.com/v1/completions");
 
             var request = new RestRequest();

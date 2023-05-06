@@ -19,6 +19,9 @@ namespace ShowAndTell.McConf.Application.Prompts.GenerateMessageByDistance
         [IntentManaged(Mode.Fully)]
         private void ConfigureValidationRules()
         {
+            RuleFor(v => v.ApiKey)
+                .NotNull();
+
         }
     }
 }
