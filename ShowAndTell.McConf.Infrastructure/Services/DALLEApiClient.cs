@@ -24,11 +24,13 @@ namespace ShowAndTell.McConf.Infrastructure.Services
             {
                 prompt = script.Text,
                 size = $"{script.Width}x{script.Height}",
+                n = 1,
+                response_format = "url"
             });
 
             var response = await _client.ExecuteAsync(request);
-            var content = JsonConvert.DeserializeObject<Video>(response.Content);
-            return content;
+            var content = JsonConvert.DeserializeObject<VideoResponse>(response.Content);
+            return content.Data.FirstOrDefault();
         }
     }
 }

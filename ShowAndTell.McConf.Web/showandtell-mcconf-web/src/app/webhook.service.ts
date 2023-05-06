@@ -11,6 +11,6 @@ export class WebhookService {
   constructor(private http: HttpClient) {}
 
   public listenForWebhook(): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/video/play`, {});
+    return this.http.post<any>(`${this.apiUrl}/api/Prompts/GenerateMessage/`, {});
   }
 }
