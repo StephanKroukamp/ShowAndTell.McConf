@@ -36,7 +36,7 @@ namespace ShowAndTell.McConf.Infrastructure
 
         public static void AddDependencyInjection(this IServiceCollection services)
         {
-            var apiKey = "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";
+            var apiKey = "";
             var dalleApiClient = new DALLEApiClient(apiKey);
             services.AddSingleton(dalleApiClient);
 

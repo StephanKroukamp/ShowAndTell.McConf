@@ -21,7 +21,7 @@ namespace ShowAndTell.McConf.Infrastructure.Services
 
         public async Task<Video> GenerateVideo(Script script)
         {
-            var request = new RestRequest("dalle-mini/video/generate", Method.POST);
+            var request = new RestRequest("dalle-mini/video/generate", Method.Post);
             request.AddJsonBody(new
             {
                 prompt = script.Text,
