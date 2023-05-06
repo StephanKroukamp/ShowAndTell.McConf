@@ -13,9 +13,11 @@ using ShowAndTell.McConf.Application.Prompts;
 using ShowAndTell.McConf.Application.Prompts.CreatePrompt;
 using ShowAndTell.McConf.Application.Prompts.DeletePrompt;
 using ShowAndTell.McConf.Application.Prompts.GenerateMessage;
+using ShowAndTell.McConf.Application.Prompts.GenerateVideo;
 using ShowAndTell.McConf.Application.Prompts.GetPromptById;
 using ShowAndTell.McConf.Application.Prompts.GetPrompts;
 using ShowAndTell.McConf.Application.Prompts.UpdatePrompt;
+using ShowAndTell.McConf.Domain.Models;
 
 [assembly: DefaultIntentManaged(Mode.Fully)]
 [assembly: IntentTemplate("Intent.AspNetCore.Controllers.Controller", Version = "1.0")]
@@ -121,6 +123,17 @@ namespace ShowAndTell.McConf.Api.Controllers
         public async Task<ActionResult<string>> GenerateMessage(string promptText, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new GenerateMessageQuery { PrompText = promptText }, cancellationToken);
+
+            var script = new Script{
+                Text = result,
+                FPS = 15,
+                Height = 500,
+                Width = 500
+            };
+
+            var request = new GenerateVideoRequest { Script = script };
+            var video = await _mediator.Send(request);
+
             return result != null ? Ok(result) : NotFound();
         }
     }

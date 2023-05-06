@@ -1,4 +1,4 @@
-﻿namespace ShowAndTell.McConf.Api.Models
+﻿namespace ShowAndTell.McConf.Domain.Models
 {
     public class Script
     {

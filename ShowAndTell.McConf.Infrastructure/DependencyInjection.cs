@@ -1,8 +1,10 @@
 using Intent.RoslynWeaver.Attributes;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShowAndTell.McConf.Application.Common.Interfaces;
+using ShowAndTell.McConf.Application.Prompts.GenerateVideo;
 using ShowAndTell.McConf.Domain.Common.Interfaces;
 using ShowAndTell.McConf.Domain.Repositories;
 using ShowAndTell.McConf.Infrastructure.Persistence;
@@ -30,6 +32,15 @@ namespace ShowAndTell.McConf.Infrastructure
             services.AddScoped<IOpenAiClient, OpenAIClient>();
 
             return services;
+        }
+
+        public static void AddDependencyInjection(this IServiceCollection services)
+        {
+            var apiKey = "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";
+            var dalleApiClient = new DALLEApiClient(apiKey);
+            services.AddSingleton(dalleApiClient);
+
+            services.AddMediatR(typeof(GenerateVideoHandler).Assembly);
         }
     }
 }

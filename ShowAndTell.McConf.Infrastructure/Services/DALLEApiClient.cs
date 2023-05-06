@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using RestSharp;
+using ShowAndTell.McConf.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
